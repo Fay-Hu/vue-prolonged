@@ -1,5 +1,5 @@
 {
-  "name": "vue",
+  "name": "vue-prolonged",
   "version": "2.6.11",
   "description": "Reactive, component-oriented view layer for modern web interfaces.",
   "main": "dist/vue.runtime.common.js",

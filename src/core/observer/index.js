@@ -13,7 +13,8 @@ import {
   isPrimitive,
   isUndef,
   isValidArrayIndex,
-  isServerRendering
+  isServerRendering,
+  safeObectContext,
 } from '../util/index'
 
 const arrayKeys = Object.getOwnPropertyNames(arrayMethods)
@@ -209,7 +210,7 @@ export function set (target: Array<any> | Object, key: any, val: any): any {
     target.splice(key, 1, val)
     return val
   }
-  if (key in target && !(key in Object.prototype)) {
+  if (key in target && !(key in safeObectContext)) {
     target[key] = val
     return val
   }

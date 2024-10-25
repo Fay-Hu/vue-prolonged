@@ -1,4 +1,5 @@
 import { isPlainObject } from 'shared/util'
+import { safeObectContext } from 'core/util/index'
 
 const vm = require('vm')
 const path = require('path')
@@ -65,7 +66,7 @@ function compileModule (files, basedir, runInNewContext) {
     }
     compiledWrapper.call(m.exports, m.exports, r, m)
 
-    const res = Object.prototype.hasOwnProperty.call(m.exports, 'default')
+    const res = safeObectContext.hasOwnProperty.call(m.exports, 'default')
       ? m.exports.default
       : m.exports
     evaluatedFiles[filename] = res

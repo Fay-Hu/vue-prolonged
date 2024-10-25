@@ -1,5 +1,5 @@
 {
-  "name": "vue-template-compiler",
+  "name": "vue-prolonged-template-compiler",
   "version": "2.6.11",
   "description": "template compiler for Vue 2.0",
   "main": "index.js",

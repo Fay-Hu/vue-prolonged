@@ -1,4 +1,5 @@
 /* @flow */
+import { safeObectContext } from 'core/util/index'
 
 export const emptyObject = Object.freeze({})
 
@@ -45,7 +46,7 @@ export function isObject (obj: mixed): boolean %checks {
 /**
  * Get the raw type string of a value, e.g., [object Object].
  */
-const _toString = Object.prototype.toString
+const _toString = safeObectContext.toString
 
 export function toRawType (value: any): string {
   return _toString.call(value).slice(8, -1)
@@ -142,7 +143,7 @@ export function remove (arr: Array<any>, item: any): Array<any> | void {
 /**
  * Check whether an object has the property.
  */
-const hasOwnProperty = Object.prototype.hasOwnProperty
+const hasOwnProperty = safeObectContext.hasOwnProperty
 export function hasOwn (obj: Object | Array<*>, key: string): boolean {
   return hasOwnProperty.call(obj, key)
 }

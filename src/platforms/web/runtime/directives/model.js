@@ -6,7 +6,7 @@
 import { isTextInputType } from 'web/util/element'
 import { looseEqual, looseIndexOf } from 'shared/util'
 import { mergeVNodeHook } from 'core/vdom/helpers/index'
-import { warn, isIE9, isIE, isEdge } from 'core/util/index'
+import { warn, isIE9, isIE, isEdge, safeObectContext } from 'core/util/index'
 
 /* istanbul ignore if */
 if (isIE9) {
@@ -89,7 +89,7 @@ function actuallySetSelected (el, binding, vm) {
     process.env.NODE_ENV !== 'production' && warn(
       `<select multiple v-model="${binding.expression}"> ` +
       `expects an Array value for its binding, but got ${
-        Object.prototype.toString.call(value).slice(8, -1)
+        safeObectContext.toString.call(value).slice(8, -1)
       }`,
       vm
     )

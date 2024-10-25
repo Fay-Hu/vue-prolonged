@@ -18,7 +18,7 @@ import {
   toRawType,
   capitalize,
   isBuiltInTag,
-  isPlainObject
+  isPlainObject,
 } from 'shared/util'
 
 /**
@@ -211,7 +211,7 @@ strats.watch = function (
   vm?: Component,
   key: string
 ): ?Object {
-  // work around Firefox's Object.prototype.watch...
+  // work around Firefox's safeObectContext.watch...
   if (parentVal === nativeWatch) parentVal = undefined
   if (childVal === nativeWatch) childVal = undefined
   /* istanbul ignore if */

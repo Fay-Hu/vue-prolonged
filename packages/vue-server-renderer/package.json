@@ -1,5 +1,5 @@
 {
-  "name": "vue-server-renderer",
+  "name": "vue-prolonged-server-renderer",
   "version": "2.6.11",
   "description": "server renderer for Vue 2.0",
   "main": "index.js",
