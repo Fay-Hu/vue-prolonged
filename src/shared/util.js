@@ -1,5 +1,5 @@
 /* @flow */
-import { safeObectContext } from 'core/util/index'
+import { safeObectContext } from 'core/util/tools'
 
 export const emptyObject = Object.freeze({})
 
