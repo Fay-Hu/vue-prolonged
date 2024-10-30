@@ -14,9 +14,10 @@ import {
   isUndef,
   isValidArrayIndex,
   isServerRendering,
-  safeObectContext,
 } from '../util/index'
-
+import {
+  safeObectContext,
+} from '../util/tools'
 const arrayKeys = Object.getOwnPropertyNames(arrayMethods)
 
 /**
