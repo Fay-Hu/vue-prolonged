@@ -17,7 +17,7 @@ export const isChrome = UA && /chrome\/\d+/.test(UA) && !isEdge
 export const isPhantomJS = UA && /phantomjs/.test(UA)
 export const isFF = UA && UA.match(/firefox\/(\d+)/)
 
-// Firefox has a "watch" function on safeObectContext...
+// Firefox has a "watch" function on safeObjectContext...
 export const nativeWatch = ({}).watch
 
 export let supportsPassive = false

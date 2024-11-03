@@ -14,8 +14,8 @@ import {
   isUndef,
   isValidArrayIndex,
   isServerRendering,
-  safeObectContext,
-} from '../util/index'
+} from 'core/util/index'
+import { safeObjectContext } from 'core/util/tools'
 
 const arrayKeys = Object.getOwnPropertyNames(arrayMethods)
 
@@ -210,7 +210,7 @@ export function set (target: Array<any> | Object, key: any, val: any): any {
     target.splice(key, 1, val)
     return val
   }
-  if (key in target && !(key in safeObectContext)) {
+  if (key in target && !(key in safeObjectContext)) {
     target[key] = val
     return val
   }

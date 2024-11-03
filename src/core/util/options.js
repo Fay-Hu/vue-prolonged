@@ -211,7 +211,7 @@ strats.watch = function (
   vm?: Component,
   key: string
 ): ?Object {
-  // work around Firefox's safeObectContext.watch...
+  // work around Firefox's safeObjectContext.watch...
   if (parentVal === nativeWatch) parentVal = undefined
   if (childVal === nativeWatch) childVal = undefined
   /* istanbul ignore if */

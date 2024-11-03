@@ -208,4 +208,12 @@ describe('Single File Component parser', () => {
     expect(res.errors.length).toBe(1)
     expect(res.errors[0].start).toBe(0)
   })
+
+  describe('HTML Parser Security', () => {
+    it('should handle mismatched tags without ReDoS', () => {
+     expect(() => {
+      parseComponent('<script>' + '<'.repeat(1000000) + '</textarea>');
+     }).toThrow();
+    });
+  });
 })
