@@ -33,10 +33,11 @@ function transformNode (el: ASTElement, options: CompilerOptions) {
 
 function genData (el: ASTElement): string {
   let data = ''
-  if (el.staticClass) {
+  if (el.staticClass && el.hasOwnProperty('staticClass')) {
     data += `staticClass:${el.staticClass},`
   }
-  if (el.classBinding) {
+
+  if (el.classBinding && el.hasOwnProperty('classBinding')) {
     data += `class:${el.classBinding},`
   }
   return data

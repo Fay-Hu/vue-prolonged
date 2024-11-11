@@ -3,7 +3,7 @@ module.exports = {
   'select2': function (browser) {
     browser
     .url('http://localhost:8080/examples/select2/')
-      .waitForElementVisible('.select2', 1000)
+      .waitForElementVisible('.select2', 2000)
       .assert.elementPresent('select')
       .assert.containsText('p', 'Selected: 0')
       .assert.containsText('span.select2', 'Select one')

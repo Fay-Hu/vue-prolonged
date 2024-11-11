@@ -1,4 +1,5 @@
 import { parseComponent } from 'sfc/parser'
+import Vue from 'vue'
 
 describe('Single File Component parser', () => {
   it('should parse', () => {
@@ -208,4 +209,52 @@ describe('Single File Component parser', () => {
     expect(res.errors.length).toBe(1)
     expect(res.errors[0].start).toBe(0)
   })
+
+  describe('HTML Parser Security', () => {
+    it('should handle mismatched tags without ReDoS', () => {
+     expect(() => {
+      parseComponent('<script>' + '<'.repeat(1000000) + '</textarea>');
+     }).toThrow()
+    })
+  })
+
+  describe('HTML Parser Security for comments', () => {
+    it('should handle mismatched tags without ReDoS but exclude comments', () => {
+      const res = parseComponent('<!-- <textarea> -->');
+      expect(res.errors.length).toBe(0)
+    })
+  })
+
+  describe('Vue staticClass Prototype Pollution', () => {
+    let alertSpy;
+  
+    beforeAll(() => {
+      const div = document.createElement('div');
+      div.id = 'app';
+      document.body.appendChild(div);
+
+      Object.prototype.staticClass = 'alert("Polluted")';
+      Object.prototype.classBinding = 'alert("Polluted")';
+      alertSpy = spyOn(window, 'alert').and.stub();
+    });
+  
+    afterAll(() => {
+      delete Object.prototype.staticClass;
+      delete Object.prototype.classBinding;
+    });
+  
+    it('should not execute polluted code in staticClass', () => {
+      const vm = new Vue({
+        el: '#app',
+        template: `<div :class="staticClass">Content</div>`,
+        data() {
+          return {
+            staticClass: 'safe-class'
+          };
+        }
+      });
+      expect(vm.$el.classList.contains('safe-class')).toBe(true);
+      expect(alertSpy).not.toHaveBeenCalled();
+    });
+  });
 })

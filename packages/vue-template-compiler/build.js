@@ -303,6 +303,34 @@ function parseHTML (html, options) {
   var canBeLeftOpenTag$$1 = options.canBeLeftOpenTag || no;
   var index = 0;
   var last, lastTag;
+
+  var closingTags = ['script', 'style', 'textarea'];
+  var tagStack = [];
+  var tagRE = /<\/?(script|style|textarea)(\s+[^>]*>|>)/gi;
+  var commentRE = /<!--[\s\S]*?-->/g; // Regular expression to match comments
+  var commentDashRE = /\/\/.*$/gm; // Regular expression to match comments start with //
+
+  // Remove all comments from the HTML content
+  var oriHtml = html.replace(commentRE, '').replace(commentDashRE, ''); // Removes any content within <!-- ... -->
+  oriHtml.replace(tagRE, function (tag) {
+    var tagName = tag.match(/<\/?([^\s>]+)/)[1];
+    
+    if (closingTags.includes(tagName)) {
+      if (tag.startsWith('</')) {
+        var lastTag = tagStack.pop();
+        if (lastTag !== tagName) {
+          throw new Error(("Mismatched closing tag: expected </" + lastTag + ">, but found " + tag));
+        }
+      } else {
+        tagStack.push(tagName);
+      }
+    }
+  });
+  
+  if (tagStack.length) {
+    throw new Error(("Unclosed tags: " + (tagStack.join(', '))));
+  }
+  
   while (html) {
     last = html;
     // Make sure we're not in a plaintext content element like script/style
@@ -2123,10 +2151,11 @@ function transformNode (el, options) {
 
 function genData (el) {
   var data = '';
-  if (el.staticClass) {
+  if (el.staticClass && el.hasOwnProperty('staticClass')) {
     data += "staticClass:" + (el.staticClass) + ",";
   }
-  if (el.classBinding) {
+
+  if (el.classBinding && el.hasOwnProperty('classBinding')) {
     data += "class:" + (el.classBinding) + ",";
   }
   return data

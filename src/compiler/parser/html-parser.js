@@ -58,6 +58,34 @@ export function parseHTML (html, options) {
   const canBeLeftOpenTag = options.canBeLeftOpenTag || no
   let index = 0
   let last, lastTag
+
+  const closingTags = ['script', 'style', 'textarea'];
+  const tagStack = [];
+  const tagRE = /<\/?(script|style|textarea)(\s+[^>]*>|>)/gi;
+  const commentRE = /<!--[\s\S]*?-->/g; // Regular expression to match comments
+  const commentDashRE = /\/\/.*$/gm; // Regular expression to match comments start with //
+
+  // Remove all comments from the HTML content
+  const oriHtml = html.replace(commentRE, '').replace(commentDashRE, ''); // Removes any content within <!-- ... -->
+  oriHtml.replace(tagRE, (tag) => {
+    const tagName = tag.match(/<\/?([^\s>]+)/)[1];
+    
+    if (closingTags.includes(tagName)) {
+      if (tag.startsWith('</')) {
+        const lastTag = tagStack.pop();
+        if (lastTag !== tagName) {
+          throw new Error(`Mismatched closing tag: expected </${lastTag}>, but found ${tag}`);
+        }
+      } else {
+        tagStack.push(tagName);
+      }
+    }
+  });
+  
+  if (tagStack.length) {
+    throw new Error(`Unclosed tags: ${tagStack.join(', ')}`);
+  }
+  
   while (html) {
     last = html
     // Make sure we're not in a plaintext content element like script/style
